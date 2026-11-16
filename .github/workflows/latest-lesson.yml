@@ -1,0 +1,23 @@
+name: Latest Chinese lesson
+on:
+  schedule:
+    # 23:00 Asia/Seoul, Monday through Friday.
+    - cron: '0 14 * * 1-5'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: latest-chinese-lesson
+  cancel-in-progress: false
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/fetch_latest.py
